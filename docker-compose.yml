@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  grafana:
+    image: grafana
+    build: .
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=geheim
+
+  telegraf:
+    image: telegraf
+    build: telegraf/
+    restart: unless-stopped
+
+  influx:
+    image: influxdb:1.8
+    restart: unless-stopped
+    ports:
+      - 8086:8086
+    environment:
+      - INFLUXDB_USER=telegraf
+      - INFLUXDB_USER_PASSWORD=geheim
+      - INFLUXDB_DB=telegraf
+
+# Remove
+# docker-compose down --rmi all -v
